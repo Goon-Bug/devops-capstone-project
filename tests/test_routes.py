@@ -133,7 +133,7 @@ class TestAccountService(TestCase):
         "It should read a single account"
         account = self._create_accounts(1)[0]
         resp = self.client.post(BASE_URL, json=account.serialize(), content_type="application/json")
-        id = resp.get_json().get("id") # sets id from resp because just incase id's don't match
+        id = resp.get_json().get("id")
         resp = self.client.get(f"{BASE_URL}/{id}", content_type="application/json")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
@@ -175,7 +175,7 @@ class TestAccountService(TestCase):
         """It should respond with the correct error when method not allowed"""
         resp = self.client.delete(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-    
+
     def test_security_headers(self):
         """It should use the correct security headers"""
         resp = self.client.get("/", environ_overrides=HTTPS_ENVIRON)
@@ -193,5 +193,3 @@ class TestAccountService(TestCase):
         resp = self.client.get("/", environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(resp.headers.get('Access-Control-Allow-Origin'), '*')
-        
-
